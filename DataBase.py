@@ -1,14 +1,14 @@
 import mysql.connector
 from mysql.connector import Error
 from configparser import ConfigParser
+from pathlib import Path
 
 class DataBase:
     def __init__(self):
-        self._db_config = self.read_db_config()
         self._conn = self.connect()
         self._cursor = self._conn.cursor()
 
-    def read_db_config(filename="config.ini", section="mysql"):
+    def read_db_config(self, filename="config.ini", section="mysql"):
         """ Read database configuration file and return a dictionary object
         :param filename: name of the configuration file
         :param section: section of database configuration
@@ -25,13 +25,18 @@ class DataBase:
         else:
             raise Exception("{0} not found in the {1} file".format(section, filename))
 
+        return db
+
     def connect(self):
         """ Connect to MySQL database """
         conn = None
         try:
-            conn = mysql.connector.connect(**self._db_config)
+            print("Connecting to MySQL database...")
+            conn = mysql.connector.connect(**self.read_db_config())
             if conn.is_connected():
-                print("Connection to MySQL established")
+                print("Connection established.")
+            else:
+                print("Connection failed.")
         except Error as e:
             print(e)
         return conn
