@@ -1,11 +1,17 @@
-import mysql.connector
-from mysql.connector import Error
 from configparser import ConfigParser
+from pymysql import Error
+import pymysql
 
 class DataBase:
     def __init__(self):
         self._conn = self.connect()
         self._cursor = self._conn.cursor()
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     def read_db_config(self, filename="config.ini", section="mysql"):
         """ Read database configuration file and return a dictionary object
@@ -31,8 +37,8 @@ class DataBase:
         conn = None
         try:
             print("Connecting to MySQL database...")
-            conn = mysql.connector.connect(**self.read_db_config())
-            if conn.is_connected():
+            conn = pymysql.connect(**self.read_db_config())
+            if conn:
                 print("Connection established.")
             else:
                 print("Connection failed.")
@@ -48,6 +54,27 @@ class DataBase:
     def cursor(self):
         return self._cursor
 
+    def commit(self):
+        self.connection.commit()
+    
+    def close(self, commit=True):
+        if commit:
+            self.commit()
+        self.connection.close()
+    
+    def execute(self, query, args=None):
+        self.cursor.execute(query, args or ())
+    
+    def fetchall(self):
+        return self.cursor.fetchall()
+    
+    def fetchone(self):
+        return self.cursor.fetchone()
+    
+    def query(self, query, args=None):
+        self.cursor.execute(query, args or ())
+        return self.fetchall()
+
     def add_algo(self, name, description, paper_id_list=None, ds_id_list=None):
         add_algo = "INSERT INTO Algorithm(name, description) " \
                    "VALUES(%s, %s)"
@@ -58,34 +85,34 @@ class DataBase:
             algo_id = self.cursor.lastrowid
 
             if paper_id_list is not None:
-                add_algo_paper = "INSERT INTO algo_paper(algorithm_id, paper_id)" \
+                add_algo_paper = "INSERT INTO algo_paper(algo_id, paper_id)" \
                                  "VALUES(%s, %s)"
                 for paper_id in paper_id_list:
                     data_algo_paper = (algo_id, paper_id)
                     self.cursor.execute(add_algo_paper, data_algo_paper)
             
             if ds_id_list is not None:
-                add_Uses = "INSERT INTO Uses(algorithm_id, dataset_id)" \
+                add_uses = "INSERT INTO uses(algo_id, ds_id)" \
                            "VALUES(%s, %s)"
                 for ds_id in ds_id_list:
-                    data_Uses = (algo_id, ds_id)
-                    self.cursor.execute(add_Uses, data_Uses)
+                    data_uses = (algo_id, ds_id)
+                    self.cursor.execute(add_uses, data_uses)
 
             self.connection.commit()
         except Error as error:
             print(error)
 
-    def add_paper(self, author, publication, published_date, algo_id_list, ds_id_list):
-        add_paper = "INSERT INTO Algorithm(author, publication, published_date) " \
-                    "VALUES(%s, %s, %s)"
-        data_paper = (author, publication, published_date)
+    def add_paper(self, name, author, publication, published_date, algo_id_list, ds_id_list):
+        add_paper = "INSERT INTO Paper(name, author, publication, published_date) " \
+                    "VALUES(%s, %s, %s, %s)"
+        data_paper = (name, author, publication, published_date)
 
         try:
             self.cursor.execute(add_paper, data_paper)
             paper_id = self.cursor.lastrowid
 
             if algo_id_list is not None:
-                add_algo_paper = "INSERT INTO algo_paper(algorithm_id, paper_id)" \
+                add_algo_paper = "INSERT INTO algo_paper(algo_id, paper_id)" \
                                  "VALUES(%s, %s)"
                 for algo_id in algo_id_list:
                     data_algo_paper = (algo_id, paper_id)
@@ -103,7 +130,7 @@ class DataBase:
             print(error)
 
     def add_dataset(self, name, description, size, attribute, algo_id_list, paper_id_list):
-        add_ds = "INSERT INTO Algorithm(name, description, size, attribute) " \
+        add_ds = "INSERT INTO Dataset(name, description, size, attribute) " \
                  "VALUES(%s, %s, %s, %s)"
         data_ds = (name, description, size, attribute)
 
@@ -112,11 +139,11 @@ class DataBase:
             ds_id = self.cursor.lastrowid
 
             if algo_id_list is not None:
-                add_Uses = "INSERT INTO Uses(algorithm_id, dataset_id)" \
+                add_uses = "INSERT INTO uses(algo_id, ds_id)" \
                            "VALUES(%s, %s)"
                 for algo_id in algo_id_list:
-                    data_Uses = (algo_id, ds_id)
-                    self.cursor.execute(add_Uses, data_Uses)
+                    data_uses = (algo_id, ds_id)
+                    self.cursor.execute(add_uses, data_uses)
             
             if paper_id_list is not None:
                 add_ds_paper = "INSERT INTO ds_paper(ds_id, paper_id)" \
@@ -139,15 +166,41 @@ class DataBase:
             bulletin_id = self.cursor.lastrowid
             
             if paper_id_list is not None:
-                add_Edit = "INSERT INTO Edit(paper_id, bulletin_id)" \
+                add_edit = "INSERT INTO edit(paper_id, bulletin_id)" \
                            "VALUES(%s, %s)"
                 for paper_id in paper_id_list:
-                    data_Edit = (paper_id, bulletin_id)
-                    self.cursor.execute(add_Edit, data_Edit)
+                    data_edit = (paper_id, bulletin_id)
+                    self.cursor.execute(add_edit, data_edit)
 
             self.connection.commit()
         except Error as error:
             print(error)
 
+    def get_task(self, name):
+        pass
+
+    def get_subtask(self, name):
+        pass
+
+    def get_algo(self, name):
+        pass
+
+    def get_paper(self, title):
+        pass
+
+    def get_dataset(self, name):
+        pass
+
 if __name__ == "__main__":
-    db = DataBase()
+    with DataBase() as db:
+        db.execute('''  CREATE TABLE Algorithm (
+                            algo_id INT NOT NULL AUTO_INCREMENT, 
+                            name VARCHAR(255), 
+                            description TEXT, 
+                            PRIMARY KEY (algo_id)
+                        )
+                    ''')
+        db.add_algo("bubble_sort", "a very simple sort")
+        algos = db.query('SELECT * FROM Algorithm')
+        db.execute('DROP TABLE Algorithm')
+        print(algos)
