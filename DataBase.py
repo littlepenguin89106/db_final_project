@@ -1,7 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
 from configparser import ConfigParser
-from pathlib import Path
 
 class DataBase:
     def __init__(self):
@@ -72,6 +71,7 @@ class DataBase:
                     data_Uses = (algo_id, ds_id)
                     self.cursor.execute(add_Uses, data_Uses)
 
+            self.connection.commit()
         except Error as error:
             print(error)
 
@@ -98,6 +98,7 @@ class DataBase:
                     data_ds_paper = (ds_id, paper_id)
                     self.cursor.execute(add_ds_paper, data_ds_paper)
 
+            self.connection.commit()
         except Error as error:
             print(error)
 
@@ -123,7 +124,8 @@ class DataBase:
                 for paper_id in paper_id_list:
                     data_ds_paper = (ds_id, paper_id)
                     self.cursor.execute(add_ds_paper, data_ds_paper)
-        
+
+            self.connection.commit()
         except Error as error:
             print(error)
 
@@ -142,10 +144,10 @@ class DataBase:
                 for paper_id in paper_id_list:
                     data_Edit = (paper_id, bulletin_id)
                     self.cursor.execute(add_Edit, data_Edit)
-        
+
+            self.connection.commit()
         except Error as error:
             print(error)
-
 
 if __name__ == "__main__":
     db = DataBase()
