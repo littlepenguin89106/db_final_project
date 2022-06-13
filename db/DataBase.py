@@ -38,7 +38,7 @@ class DataBase:
         try:
             print("Connecting to MySQL database...")
             conn = pymysql.connect(**self.read_db_config())
-            if conn.open():
+            if conn.open:
                 print("Connection established.")
             else:
                 print("Connection failed.")
@@ -205,11 +205,35 @@ class DataBase:
     def get_algo(self, name):
         pass
 
+    def get_algo_all(self):
+        try:
+            self.cursor.execute("SELECT * FROM Algorithm")
+            result = self.fetchall()
+        except Error as error:
+            print(error)
+        return result
+
     def get_paper(self, title):
         pass
 
+    def get_paper_all(self):
+        try:
+            self.cursor.execute("SELECT * FROM Paper")
+            result = self.fetchall()
+        except Error as error:
+            print(error)
+        return result
+
     def get_dataset(self, name):
         pass
+
+    def get_ds_all(self):
+        try:
+            self.cursor.execute("SELECT * FROM Dataset")
+            result = self.fetchall()
+        except Error as error:
+            print(error)
+        return result
     
     def update_task(self):
         pass
@@ -227,5 +251,5 @@ if __name__ == "__main__":
     with DataBase() as db:
         db.add_algo("bubble_sort", "a very simple sort")
         algos = db.query('SELECT * FROM Algorithm')
-        db.execute('DELETE FROM Algorithm')
+        # db.execute('DELETE FROM Algorithm')
         print(algos)
