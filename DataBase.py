@@ -38,7 +38,7 @@ class DataBase:
         try:
             print("Connecting to MySQL database...")
             conn = pymysql.connect(**self.read_db_config())
-            if conn:
+            if conn.open():
                 print("Connection established.")
             else:
                 print("Connection failed.")
@@ -74,6 +74,26 @@ class DataBase:
     def query(self, query, args=None):
         self.cursor.execute(query, args or ())
         return self.fetchall()
+    
+    def add_task(self, name, description):
+        add_task =  "INSERT INTO Subtask(name, description)" \
+                    "VALUES(%s, %s)"
+        data_task = (name, description)
+
+        try:
+            self.cursor.execute(add_task, data_task)
+        except Error as error:
+            print(error)
+
+    def add_subtask(self, task_id, name, description):
+        add_task =  "INSERT INTO Subtask(task_id, name, description)" \
+                    "VALUES(%s, %s, %s)"
+        data_task = (task_id, name, description)
+
+        try:
+            self.cursor.execute(add_task, data_task)
+        except Error as error:
+            print(error)
 
     def add_algo(self, name, description, paper_id_list=None, ds_id_list=None):
         add_algo = "INSERT INTO Algorithm(name, description) " \
@@ -190,17 +210,22 @@ class DataBase:
 
     def get_dataset(self, name):
         pass
+    
+    def update_task(self):
+        pass
+
+    def update_subtask(self):
+        pass
+
+    def update_paper(self):
+        pass
+
+    def update_dataset(self):
+        pass
 
 if __name__ == "__main__":
     with DataBase() as db:
-        db.execute('''  CREATE TABLE Algorithm (
-                            algo_id INT NOT NULL AUTO_INCREMENT, 
-                            name VARCHAR(255), 
-                            description TEXT, 
-                            PRIMARY KEY (algo_id)
-                        )
-                    ''')
         db.add_algo("bubble_sort", "a very simple sort")
         algos = db.query('SELECT * FROM Algorithm')
-        db.execute('DROP TABLE Algorithm')
+        db.execute('DELETE FROM Algorithm')
         print(algos)
