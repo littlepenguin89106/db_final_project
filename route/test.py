@@ -27,7 +27,7 @@ def test_get(val1,val2):
         return HTTPError('unknown error', 406)
         
 
-@test_api.route('/get', methods=['PATCH'])
+@test_api.route('/patch', methods=['PATCH'])
 @Request.json('key1: list','key2: dict')
 def test_patch(key1,key2):
     try:
