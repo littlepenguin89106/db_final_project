@@ -1,20 +1,21 @@
 from .DataBase import *
 
 class UpdateManager(DataBase):
-    def update_algo_info(self, algo_id, description):
+    def update_algo_info(self, algo_id, name, description):
         try:
             query = """
                 UPDATE Algorithm
-                SET description = %s
+                SET name = %s,
+                    description = %s
                 WHERE algo_id = %s
             """
-            data = (description, algo_id)
+            data = (name, description, algo_id)
             self.execute(query, data)
             self.commit()
         except Error as error:
             print(error)
 
-    def update_paper(self, paper_id, name, author, publication, published_date, algo_id_list, ds_id_list):
+    def update_paper_info(self, paper_id, name, author, publication, published_date, algo_id_list, ds_id_list):
         query = """
             UPDATE Paper
             SET name = %s,
@@ -42,6 +43,20 @@ class UpdateManager(DataBase):
                     data = (ds_id, paper_id)
                     self.execute(query, data)
 
+            self.commit()
+        except Error as error:
+            print(error)
+
+    def update_bulletin_info(self, bulletin_id, author, description):
+        try:
+            query = """
+                UPDATE Bulletin
+                Set author = %s,
+                    description = %s
+                WHERE bulletin_id = %s
+            """
+            data = (author, description, bulletin_id)
+            self.execute(query, data)
             self.commit()
         except Error as error:
             print(error)

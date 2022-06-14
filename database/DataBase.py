@@ -74,3 +74,13 @@ class DataBase:
     def query(self, query, args=None):
         self.cursor.execute(query, args or ())
         return self.fetchall()
+
+if __name__ == "__main__":
+    db = DataBase()
+    query = """
+        INSERT INTO Algorithm(name, description)
+        VALUES(%s, %s)
+    """
+    data = ("sort", "loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog")
+    db.execute(query, data)
+    print(db.query("select * from Algorithm"))

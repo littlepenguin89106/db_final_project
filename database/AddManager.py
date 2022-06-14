@@ -1,20 +1,12 @@
 from .DataBase import *
 
 class AddManager(DataBase):
-    def add_algo(self, name, description, task_id_list=None, paper_id_list=None):
+    def add_algo(self, name, description):
         query = "INSERT INTO Algorithm(name, description) VALUES(%s, %s)"
         data = (name, description)
 
         try:
             self.execute(query, data)
-            algo_id = self.cursor.lastrowid
-
-            if task_id_list is not None:
-                query = "INSERT INTO algo_task(algo_id, task_id) VALUES(%s, %s)"
-                for task_id in task_id_list:
-                    data = (algo_id, task_id)
-                    self.execute(query, data)
-
             self.commit()
 
         except Error as error:

@@ -20,3 +20,14 @@ class DelManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+
+    
+    def del_bulletin(self, bulletin_id):
+        try:
+            self.execute("""
+                DELETE FROM Bulletin
+                WHERE bulletin_id = %s
+            """, (bulletin_id,))
+            self.commit()
+        except Error as error:
+            print(error)
