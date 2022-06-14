@@ -13,7 +13,7 @@ class DataBase:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
-    def read_db_config(self, filename="..\config.ini", section="mysql"):
+    def read_db_config(self, filename="config.ini", section="mysql"):
         """ Read database configuration file and return a dictionary object
         :param filename: name of the configuration file
         :param section: section of database configuration

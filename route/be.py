@@ -167,9 +167,9 @@ def AddPaper(paper_id, name, description, author, publication, published_date, a
 # Upload announcement page
 @be_api.route('/add_announcement', methods=['POST'])
 @Request.json('author: str', 'description: str')
-def AddAnouncement(author, description):
+def AddAnnouncement(author, description):
     try:
         AddManager().add_bulletin(author, description)
-        return HTTPResponse(message='AddAnouncement success')
+        return HTTPResponse(message='AddAnnouncement success')
     except:
         return HTTPError('unknown error', 406)
