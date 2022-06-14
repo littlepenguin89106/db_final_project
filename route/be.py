@@ -5,12 +5,12 @@ from .utils.request import Request
 
 from database import *
 
-__all__ = ['api']
+__all__ = ['be_api']
 
-api = Blueprint('api', __name__)
+be_api = Blueprint('be_api', __name__)
 
 # Search paper
-@api.route('/get_paper', methods=['GET'])
+@be_api.route('/get_paper', methods=['GET'])
 def GetPaper():
     try:
         data = GetManager().get_paper()
@@ -20,7 +20,7 @@ def GetPaper():
 
 
 # Display paper page
-@api.route('/show_paper', methods=['POST'])
+@be_api.route('/show_paper', methods=['POST'])
 @Request.json('paper_id: int')
 def ShowPaper(paper_id):
     try:
@@ -31,7 +31,7 @@ def ShowPaper(paper_id):
 
 
 # Display algorithm page
-@api.route('/show_algo', methods=['POST'])
+@be_api.route('/show_algo', methods=['POST'])
 @Request.json('algo_id: int')
 def ShowAlgo(algo_id):
     try:
@@ -42,7 +42,7 @@ def ShowAlgo(algo_id):
 
 
 # Update algorithm page
-@api.route('/get_algo', methods=['GET'])
+@be_api.route('/get_algo', methods=['GET'])
 def GetAlgo():
     try:
         data = GetManager().get_algo()
@@ -51,7 +51,7 @@ def GetAlgo():
         return HTTPError('unknown error', 406)
 
 
-@api.route('/get_algo_info', methods=['POST'])
+@be_api.route('/get_algo_info', methods=['POST'])
 @Request.json('algo_id: int')
 def GetAlgoInfo(algo_id):
     try:
@@ -61,7 +61,7 @@ def GetAlgoInfo(algo_id):
         return HTTPError('unknown error', 406)
 
 
-@api.route('/upload_algo_info', methods=['POST'])
+@be_api.route('/upload_algo_info', methods=['POST'])
 @Request.json('algo_id: int', 'description: str')
 def UpdateAlgoInfo(algo_id, name, description):
     try:
@@ -71,7 +71,7 @@ def UpdateAlgoInfo(algo_id, name, description):
         return HTTPError('unknown error', 406)
 
 
-@api.route('/exist_algo', methods=['POST'])
+@be_api.route('/exist_algo', methods=['POST'])
 @Request.json('algo_id: int')
 def ExistAlgo(algo_id):
     try:
@@ -81,7 +81,7 @@ def ExistAlgo(algo_id):
         return HTTPError('unknown error', 406)
 
 
-@api.route('/del_algo', methods=['POST'])
+@be_api.route('/del_algo', methods=['POST'])
 @Request.json('algo_id: int')
 def DeleteAlgo(algo_id):
     try:
@@ -92,7 +92,7 @@ def DeleteAlgo(algo_id):
 
 
 # Update paper page
-@api.route('/update_paper_info', methods=['POST'])
+@be_api.route('/update_paper_info', methods=['POST'])
 @Request.json('paper_id: int', 'name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'dataset: list')
 def UpdatePaperInfo(paper_id, name, description, author, publication, published_date, algo, dataset):
     try:
@@ -102,7 +102,7 @@ def UpdatePaperInfo(paper_id, name, description, author, publication, published_
         return HTTPError('unknown error', 406)
 
 
-@api.route('/del_paper', methods=['POST'])
+@be_api.route('/del_paper', methods=['POST'])
 @Request.json('paper_id: int')
 def DeletePaper(paper_id):
     try:
@@ -113,7 +113,7 @@ def DeletePaper(paper_id):
 
 
 # Update bulletin page
-@api.route('/get_bulletin', methods=['GET'])
+@be_api.route('/get_bulletin', methods=['GET'])
 def GetBulletin():
     try:
         data = GetManager().get_bulletin()
@@ -122,7 +122,7 @@ def GetBulletin():
         return HTTPError('unknown error', 406)
 
 
-@api.route('/update_bulletin_info', methods=['POST'])
+@be_api.route('/update_bulletin_info', methods=['POST'])
 @Request.json('bulletin_id: int', 'author: str', 'description: str')
 def UpdateBulletinInfo(bulletin_id, author, description):
     try:
@@ -132,7 +132,7 @@ def UpdateBulletinInfo(bulletin_id, author, description):
         return HTTPError('unknown error', 406)
 
 
-@api.route('/delete_bulletin', methods=['POST'])
+@be_api.route('/delete_bulletin', methods=['POST'])
 @Request.json('bulletin_id: int')
 def DeleteBulletin(bulletin_id):
     try:
@@ -143,7 +143,7 @@ def DeleteBulletin(bulletin_id):
 
 
 # Upload algorithm page
-@api.route('/add_algo', methods=['POST'])
+@be_api.route('/add_algo', methods=['POST'])
 @Request.json('algo_id: int', 'description: str')
 def AddAlgo(algo_id, description):
     try:
@@ -154,7 +154,7 @@ def AddAlgo(algo_id, description):
 
 
 # Upload paper page
-@api.route('/add_paper', methods=['POST'])
+@be_api.route('/add_paper', methods=['POST'])
 @Request.json('paper_id: int', 'name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'dataset: list')
 def AddPaper(paper_id, name, description, author, publication, published_date, algo, dataset):
     try:
@@ -165,7 +165,7 @@ def AddPaper(paper_id, name, description, author, publication, published_date, a
 
 
 # Upload announcement page
-@api.route('/add_announcement', methods=['POST'])
+@be_api.route('/add_announcement', methods=['POST'])
 @Request.json('author: str', 'description: str')
 def AddAnnouncement(author, description):
     try:
