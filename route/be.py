@@ -156,11 +156,20 @@ def AddAlgo(algo_id, description):
 
 
 # Upload paper page
-@be_api.route('/add_paper', methods=['POST'])
-@Request.json('paper_id: int', 'name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'dataset: list')
-def AddPaper(paper_id, name, description, author, publication, published_date, algo, dataset):
+@be_api.route('/get_task', methods=['GET'])
+def GetTask():
     try:
-        AddManager().add_paper(paper_id, name, description, author, publication, published_date, algo, dataset)
+        data = GetManager().get_task()
+        return HTTPResponse(data=data, message='GetTask success')
+    except:
+        return HTTPError('unknown error', 406)
+
+
+@be_api.route('/add_paper', methods=['POST'])
+@Request.json('paper_id: int', 'name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'task: list')
+def AddPaper(paper_id, name, description, author, publication, published_date, algo, task):
+    try:
+        AddManager().add_paper(paper_id, name, description, author, publication, published_date, algo, task)
         return HTTPResponse(message='AddPaper success')
     except:
         return HTTPError('unknown error', 406)

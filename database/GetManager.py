@@ -109,3 +109,10 @@ class GetManager(DataBase):
         except Error as error:
             print(error)
         return result
+    
+    def get_task(self):
+        try:
+            result = self.query("SELECT * FROM Task")
+        except Error as error:
+            print(error)
+        return result

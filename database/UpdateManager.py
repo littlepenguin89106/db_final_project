@@ -15,7 +15,7 @@ class UpdateManager(DataBase):
         except Error as error:
             print(error)
 
-    def update_paper_info(self, paper_id, name, author, publication, published_date, algo_id_list, ds_id_list):
+    def update_paper_info(self, paper_id, name, author, publication, published_date, algo_id_list, task_id_list):
         query = """
             UPDATE Paper
             SET name = %s,
@@ -33,14 +33,14 @@ class UpdateManager(DataBase):
                 query = "INSERT INTO algo_paper(algo_id, paper_id)" \
                         "VALUES(%s, %s)"
                 for algo_id in algo_id_list:
-                    data = (algo_id, paper_id)
+                    data = (algo_id["algo_id"], paper_id)
                     self.execute(query, data)
             
-            if ds_id_list is not None:
-                query = "INSERT INTO ds_paper(ds_id, paper_id)" \
+            if task_id_list is not None:
+                query = "INSERT INTO paper_task(paper_id, task_id)" \
                         "VALUES(%s, %s)"
-                for ds_id in ds_id_list:
-                    data = (ds_id, paper_id)
+                for task_id in task_id_list:
+                    data = (paper_id, task_id["task_id"])
                     self.execute(query, data)
 
             self.commit()
