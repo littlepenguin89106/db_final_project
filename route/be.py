@@ -14,7 +14,7 @@ be_api = Blueprint('be_api', __name__)
 def GetPaper():
     try:
         data = GetManager().get_paper()
-        return HTTPResponse(data, message='GetPaper success')
+        return HTTPResponse(data=data, message='GetPaper success')
     except:
         return HTTPError('unknown error', 406)
 
@@ -25,7 +25,7 @@ def GetPaper():
 def ShowPaper(paper_id):
     try:
         data = GetManager().show_paper(paper_id)
-        return HTTPResponse(data, message='ShowPaper success')
+        return HTTPResponse(data=data, message='ShowPaper success')
     except:
         return HTTPError('unknown error', 406)
 
@@ -36,18 +36,20 @@ def ShowPaper(paper_id):
 def ShowAlgo(algo_id):
     try:
         data = GetManager().show_algo(algo_id)
-        return HTTPResponse(data, message='ShowAlgo success')
+        return HTTPResponse(data=data, message='ShowAlgo success')
     except:
         return HTTPError('unknown error', 406)
 
+import traceback
 
 # Update algorithm page
 @be_api.route('/get_algo', methods=['GET'])
 def GetAlgo():
     try:
         data = GetManager().get_algo()
-        return HTTPResponse(data, message='GetAlgo success')
+        return HTTPResponse(data=data, message='GetAlgo success')
     except:
+        print(traceback.format_exc())
         return HTTPError('unknown error', 406)
 
 
@@ -56,7 +58,7 @@ def GetAlgo():
 def GetAlgoInfo(algo_id):
     try:
         data = GetManager().get_algo_info(algo_id)
-        return HTTPResponse(data, message='GetAlgoInfo success')
+        return HTTPResponse(data=data, message='GetAlgoInfo success')
     except:
         return HTTPError('unknown error', 406)
 
@@ -117,7 +119,7 @@ def DeletePaper(paper_id):
 def GetBulletin():
     try:
         data = GetManager().get_bulletin()
-        return HTTPResponse(data, message='GetBulletin success')
+        return HTTPResponse(data=data, message='GetBulletin success')
     except:
         return HTTPError('unknown error', 406)
 

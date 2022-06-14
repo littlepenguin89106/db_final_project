@@ -37,7 +37,10 @@ class DataBase:
         conn = None
         try:
             print("Connecting to MySQL database...")
-            conn = pymysql.connect(**self.read_db_config())
+            conn = pymysql.connect(host="localhost",
+                                    database="team8",
+                                    user="root",
+                                    password="Qaz40847038S")
             if conn.open:
                 print("Connection established.")
             else:
@@ -74,13 +77,3 @@ class DataBase:
     def query(self, query, args=None):
         self.cursor.execute(query, args or ())
         return self.fetchall()
-
-if __name__ == "__main__":
-    db = DataBase()
-    query = """
-        INSERT INTO Algorithm(name, description)
-        VALUES(%s, %s)
-    """
-    data = ("sort", "loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog")
-    db.execute(query, data)
-    print(db.query("select * from Algorithm"))
