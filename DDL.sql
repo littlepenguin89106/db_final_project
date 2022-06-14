@@ -21,6 +21,7 @@ create table Dataset (
 
 create table Paper (
     paper_id int auto_increment,
+	name varchar(50),
     author varchar(50),
     publication varchar(50),
     published_date date,
@@ -30,8 +31,8 @@ create table Paper (
 create table Bulletin (
     bulletin_id int auto_increment,
     author varchar(50),
-    publication varchar(50),
-    primary key (bulletin_id)
+    description text,
+	primary key (bulletin_id)
 );
 
 create table Task (
@@ -41,6 +42,7 @@ create table Task (
     primary key (task_id)
 );
 
+/*
 create table Subtask (
     subtask_id int auto_increment,
     task_id int,
@@ -49,9 +51,11 @@ create table Subtask (
     primary key (subtask_id),
     foreign key (task_id) references Task(task_id)
 );
+*/
 
 -- relation
 
+/*
 create table applies (
     subtask_id int,
     algo_id int,
@@ -68,6 +72,7 @@ create table uses (
     constraint pk_uses primary key (algo_id,ds_id)
 );
 
+
 create table ds_paper (
     ds_id int,
     paper_id int,
@@ -83,6 +88,7 @@ create table edit (
     foreign key (bulletin_id) references Bulletin(bulletin_id),
     constraint pk_edit primary key (paper_id,bulletin_id)
 );
+*/
 
 create table algo_paper (
     algo_id int,
@@ -90,4 +96,20 @@ create table algo_paper (
     foreign key (algo_id) references Algorithm(algo_id),
     foreign key (paper_id) references Paper(paper_id),
     constraint pk_algo_paper primary key (algo_id,paper_id)
+);
+
+create table paper_task (
+	paper_id int,
+	task_id int,
+	foreign key (paper_id) references Paper(paper_id),
+	foreign key (task_id) references Task(task_id),
+	constraint pk_paper_task primary key (paper_id, task_id)
+);
+
+create table ds_task (
+	task_id int,
+	ds_id int,
+	foreign key (task_id) references Task(task_id),
+	foreign key (ds_id) references Dataset(ds_id),
+	constraint pk_ds_task primary key (task_id, ds_id)
 );
