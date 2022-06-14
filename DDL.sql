@@ -14,7 +14,6 @@ create table Dataset (
     ds_id int auto_increment,
     name varchar(150),
     description text,
---  size numeric,
     attribute varchar(100),
     primary key (ds_id)
 );

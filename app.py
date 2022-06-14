@@ -1,5 +1,6 @@
 from operator import truediv
 from flask import Flask
+from database.GetManager import GetManager
 # from route import api
 from route import test_api,be_api
 
