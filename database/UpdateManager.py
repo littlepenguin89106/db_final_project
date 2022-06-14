@@ -20,7 +20,7 @@ class UpdateManager(DataBase):
             UPDATE Paper
             SET name = %s,
                 author = %s,
-                pulication = %s,
+                publication = %s,
                 published_date = %s
             WHERE paper_id = %s
         """

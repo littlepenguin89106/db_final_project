@@ -50,6 +50,6 @@ class AddManager(DataBase):
 # test only
 if __name__ == "__main__":
     db = AddManager()
-    db.add_algo("quik sort", "a faster sort")
+    db.add_algo("quick sort", "a faster sort")
     result = db.query("select name as algo_name from Algorithm")
     print(result)
