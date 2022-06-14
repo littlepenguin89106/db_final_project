@@ -5,27 +5,27 @@ use Team8;
 
 create table Algorithm (
     algo_id int auto_increment,
-    name varchar(50),
+    name varchar(100),
     description text,
     primary key (algo_id)
 );
 
 create table Dataset (
     ds_id int auto_increment,
-    name varchar(50),
+    name varchar(150),
     description text,
-    size numeric,
-    attribute varchar(50),
+--  size numeric,
+    attribute varchar(100),
     primary key (ds_id)
 );
 
 create table Paper (
     paper_id int auto_increment,
-    name varchar(50),
-    author varchar(50),
+    name varchar(200),
+    author varchar(200),
     publication varchar(50),
     published_date date,
-    description 
+    description text,
     primary key (paper_id)
 );
 
@@ -38,8 +38,7 @@ create table Bulletin (
 
 create table Task (
     task_id int auto_increment,
-    name varchar(50),
-    description text,
+    name varchar(100),
     primary key (task_id)
 );
 
