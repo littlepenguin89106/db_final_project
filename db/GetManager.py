@@ -40,11 +40,30 @@ class GetManager(DataBase):
             print(error)
         return result
 
-    def get_algo_info(self):
-        pass
+    def get_algo_info(self, algo_id):
+        try:
+            self.cursor.execute("""
+                SELECT Task.name as task_name, Algorithm.description as description
+                FROM Algorithm
+                NATURAL JOIN applies
+                NATURAL JOIN Task
+                WHERE algo_id = %s
+            """, (algo_id,))
+            result = self.fetchall()
+        except Error as error:
+            print(error)
+        return result
 
     def get_paper(self):
-        pass
+        try:
+            self.cursor.execute("""
+                SELECT *
+                FROM Paper
+            """)
+            result = self.fetchall()
+        except Error as error:
+            print(error)
+        return result
 
     def show_paper(self, paper_id):
         result = dict()
