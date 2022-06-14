@@ -21,10 +21,11 @@ create table Dataset (
 
 create table Paper (
     paper_id int auto_increment,
-	name varchar(50),
+    name varchar(50),
     author varchar(50),
     publication varchar(50),
     published_date date,
+    description 
     primary key (paper_id)
 );
 
@@ -32,7 +33,7 @@ create table Bulletin (
     bulletin_id int auto_increment,
     author varchar(50),
     description text,
-	primary key (bulletin_id)
+    primary key (bulletin_id)
 );
 
 create table Task (
@@ -99,17 +100,17 @@ create table algo_paper (
 );
 
 create table paper_task (
-	paper_id int,
-	task_id int,
-	foreign key (paper_id) references Paper(paper_id),
-	foreign key (task_id) references Task(task_id),
-	constraint pk_paper_task primary key (paper_id, task_id)
+    paper_id int,
+    task_id int,
+    foreign key (paper_id) references Paper(paper_id),
+    foreign key (task_id) references Task(task_id),
+    constraint pk_paper_task primary key (paper_id, task_id)
 );
 
 create table ds_task (
-	task_id int,
-	ds_id int,
-	foreign key (task_id) references Task(task_id),
-	foreign key (ds_id) references Dataset(ds_id),
-	constraint pk_ds_task primary key (task_id, ds_id)
+    task_id int,
+    ds_id int,
+    foreign key (task_id) references Task(task_id),
+    foreign key (ds_id) references Dataset(ds_id),
+    constraint pk_ds_task primary key (task_id, ds_id)
 );
