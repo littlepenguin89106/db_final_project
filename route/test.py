@@ -3,6 +3,8 @@ from flask import Blueprint
 from .utils.response import HTTPResponse, HTTPError
 from .utils.request import Request
 
+from database import *
+
 __all__ = ['test_api']
 
 test_api = Blueprint('test_api', __name__)
