@@ -38,9 +38,9 @@ class DataBase:
         try:
             print("Connecting to MySQL database...")
             conn = pymysql.connect(host="localhost",
-                                    database="team8",
-                                    user="root",
-                                    password="Qaz40847038S")
+                                    database="Team8",
+                                    user="dbteam8",
+                                    password="team8asdfg")
             if conn.open:
                 print("Connection established.")
             else:
