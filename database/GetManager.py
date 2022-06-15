@@ -51,12 +51,12 @@ class GetManager(DataBase):
     def exist_algo(self, algo_id):
         result = dict({"deletable": None})
         try:
-            self.execute("SELECT algo_id FROM Algorithm WHERE algo_id = %s", (algo_id,))
+            self.execute("SELECT algo_id FROM algo_paper WHERE algo_id = %s", (algo_id,))
             query_result = self.fetchone()
             if query_result is None:
-                result["deletable"] = False
-            else:
                 result["deletable"] = True
+            else:
+                result["deletable"] = False
         except Error as error:
             print(error)
         return result

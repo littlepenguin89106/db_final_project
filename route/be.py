@@ -85,12 +85,12 @@ def ExistAlgo(algo_id):
         return HTTPError('unknown error', 406)
 
 
-@be_api.route('/del_algo', methods=['POST'])
+@be_api.route('/delete_algo', methods=['POST'])
 @Request.json('algo_id: int')
 def DeleteAlgo(algo_id):
     try:
-        UpdateManager().update_algo_info(algo_id)
-        return HTTPResponse(message='UpdateAlgo success')
+        DelManager().del_algo(algo_id)
+        return HTTPResponse(message='DeleteAlgo success')
     except:
         return HTTPError('unknown error', 406)
 
@@ -106,7 +106,7 @@ def UpdatePaperInfo(paper_id, name, description, author, publication, publish_da
         return HTTPError('unknown error', 406)
 
 
-@be_api.route('/del_paper', methods=['POST'])
+@be_api.route('/delete_paper', methods=['POST'])
 @Request.json('paper_id: int')
 def DeletePaper(paper_id):
     try:

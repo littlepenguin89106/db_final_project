@@ -14,6 +14,16 @@ class DelManager(DataBase):
     def del_paper(self, paper_id):
         try:
             self.execute("""
+                DELETE FROM algo_paper
+                WHERE paper_id = %s
+            """, (paper_id,))
+
+            self.execute("""
+                DELETE FROM paper_task
+                WHERE paper_id = %s
+            """, (paper_id,))
+
+            self.execute("""
                 DELETE FROM Paper
                 WHERE paper_id = %s
             """, (paper_id,))
