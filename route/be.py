@@ -64,8 +64,8 @@ def GetAlgoInfo(algo_id):
         return HTTPError('unknown error', 406)
 
 
-@be_api.route('/upload_algo_info', methods=['POST'])
-@Request.json('algo_id: int', 'description: str')
+@be_api.route('/update_algo_info', methods=['POST'])
+@Request.json('algo_id: int', 'name: str', 'description: str')
 def UpdateAlgoInfo(algo_id, name, description):
     try:
         UpdateManager().update_algo_info(algo_id, name, description)
@@ -97,10 +97,10 @@ def DeleteAlgo(algo_id):
 
 # Update paper page
 @be_api.route('/update_paper_info', methods=['POST'])
-@Request.json('paper_id: int', 'name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'dataset: list')
-def UpdatePaperInfo(paper_id, name, description, author, publication, published_date, algo, dataset):
+@Request.json('paper_id: int', 'name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'task: list')
+def UpdatePaperInfo(paper_id, name, description, author, publication, publish_date, algo, task):
     try:
-        UpdateManager().update_paper_info(paper_id, name, description, author, publication, published_date, algo, dataset)
+        UpdateManager().update_paper_info(paper_id, name, description, author, publication, publish_date, algo, task)
         return HTTPResponse(message='UpdatePaper success')
     except:
         return HTTPError('unknown error', 406)
@@ -148,10 +148,10 @@ def DeleteBulletin(bulletin_id):
 
 # Upload algorithm page
 @be_api.route('/add_algo', methods=['POST'])
-@Request.json('algo_id: int', 'description: str')
-def AddAlgo(algo_id, description):
+@Request.json('algo_name: str', 'description: str')
+def AddAlgo(algo_name, description):
     try:
-        AddManager().add_algo(algo_id, description)
+        AddManager().add_algo(algo_name, description)
         return HTTPResponse(message='AddAlgo success')
     except:
         return HTTPError('unknown error', 406)
@@ -168,12 +168,13 @@ def GetTask():
 
 
 @be_api.route('/add_paper', methods=['POST'])
-@Request.json('paper_id: int', 'name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'task: list')
-def AddPaper(paper_id, name, description, author, publication, published_date, algo, task):
+@Request.json('name: str', 'description: str', 'author: str', 'publication: str', 'publish_date: str', 'algo: list', 'task: list')
+def AddPaper(name, description, author, publication, publish_date, algo, task):
     try:
-        AddManager().add_paper(paper_id, name, description, author, publication, published_date, algo, task)
+        AddManager().add_paper(name, description, author, publication, publish_date, algo, task)
         return HTTPResponse(message='AddPaper success')
     except:
+        print(traceback.format_exc())
         return HTTPError('unknown error', 406)
 
 

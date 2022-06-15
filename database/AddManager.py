@@ -12,9 +12,9 @@ class AddManager(DataBase):
         except Error as error:
             print(error)
         
-    def add_paper(self, name, author, publication, published_date, algo_id_list, task_id_list):
-        query = "INSERT INTO Paper(name, author, publication, published_date) VALUES(%s, %s, %s, %s)"
-        data = (name, author, publication, published_date)
+    def add_paper(self, name, description, author, publication, published_date, algo_id_list, task_id_list):
+        query = "INSERT INTO Paper(name, author, publication, published_date, description) VALUES(%s, %s, %s, %s, %s)"
+        data = (name, author, publication, published_date, description)
 
         try:
             self.execute(query, data)
