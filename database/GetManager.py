@@ -22,15 +22,15 @@ class GetManager(DataBase):
                 WHERE algo_id = %s
             """
             data = (algo_id,)
-            result = self.query(query, data)
+            self.execute(query, data)
+            result = self.fetchone()
             
             query = """
                 SELECT paper_id, Paper.name as paper_name
-                FROM (SELECT * FROM Algorithm WHERE algo_id = %s) as algo
-                NATURAL JOIN algo_paper
+                FROM (SELECT * FROM algo_paper WHERE algo_id = %s) as ap
                 NATURAL JOIN Paper
             """
-            self.execute(query)
+            self.execute(query, data)
             result["paper_name"] = self.fetchall()
         except Error as error:
             print(error)
@@ -43,21 +43,23 @@ class GetManager(DataBase):
                 FROM Algorithm
                 WHERE algo_id = %s
             """, (algo_id,))
-            result = self.fetchall()
+            result = self.fetchone()
         except Error as error:
             print(error)
         return result
     
     def exist_algo(self, algo_id):
+        result = dict({"deletable": None})
         try:
-            result = self.query("SELECT algo_id FROM Algorithm WHERE algo_id = %s", (algo_id,))
-            if result is None:
-                deletable = False
+            self.execute("SELECT algo_id FROM Algorithm WHERE algo_id = %s", (algo_id,))
+            query_result = self.fetchone()
+            if query_result is None:
+                result["deletable"] = False
             else:
-                deletable = True
+                result["deletable"] = True
         except Error as error:
             print(error)
-        return deletable
+        return result
 
     def get_paper(self):
         try:
@@ -92,13 +94,13 @@ class GetManager(DataBase):
             result["algo"] = self.fetchall()
 
             query = """
-                SELECT ds_id as data_id, name as data_name
-                FROM ds_paper
-                NATURAL JOIN Dataset
+                SELECT task_id, name as task_name
+                FROM paper_task
+                NATURAL JOIN Task
                 WHERE paper_id = %s
             """
             self.execute(query, (paper_id,))
-            result["dataset"] = self.fetchall()
+            result["task"] = self.fetchall()
         except Error as error:
             print(error)
         return result

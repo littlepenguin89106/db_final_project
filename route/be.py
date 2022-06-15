@@ -38,6 +38,7 @@ def ShowAlgo(algo_id):
         data = GetManager().show_algo(algo_id)
         return HTTPResponse(data=data, message='ShowAlgo success')
     except:
+        print(traceback.format_exc())
         return HTTPError('unknown error', 406)
 
 import traceback
@@ -77,9 +78,10 @@ def UpdateAlgoInfo(algo_id, name, description):
 @Request.json('algo_id: int')
 def ExistAlgo(algo_id):
     try:
-        data = GetManager.exist_algo(algo_id)
-        return HTTPResponse({"deletable": data}, message='UpdateAlgo success')
+        data = GetManager().exist_algo(algo_id)
+        return HTTPResponse(data=data, message='ExistAlgo success')
     except:
+        print(traceback.format_exc())
         return HTTPError('unknown error', 406)
 
 
