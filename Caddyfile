@@ -1,0 +1,17 @@
+218.161.38.228:80 {
+#  header {
+    # enable HSTS
+#    Strict-Transport-Security max-age=31536000;
+#  }
+  handle_path /api/* {
+    reverse_proxy localhost:5000 {
+      header_up Host localhost
+    }   
+  }
+  #handle {
+  #    root * {$FE_DIR}
+  #    file_server
+  #    try_files {path} /index.html
+  #}  
+}
+
