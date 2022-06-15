@@ -187,3 +187,14 @@ def AddAnnouncement(author, description):
         return HTTPResponse(message='AddAnnouncement success')
     except:
         return HTTPError('unknown error', 406)
+
+
+# Get dataset via task_id
+@be_api.route('/get_dataset', methods=['POST'])
+@Request.json('task_id: int')
+def GetDataset(task_id):
+    try:
+        data = GetManager().get_dataset(task_id)
+        return HTTPResponse(data=data, message='GetDataset success')
+    except:
+        return HTTPError('unknown error', 406)

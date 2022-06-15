@@ -118,3 +118,15 @@ class GetManager(DataBase):
         except Error as error:
             print(error)
         return result
+
+    def get_dataset(self, task_id):
+        try:
+            result = self.query("""
+                SELECT ds_id as dataset_id, Dataset.name as dataset_name
+                FROM ds_task
+                NATURAL JOIN Dataset
+                WHERE task_id = %s
+            """, (task_id,))
+        except Error as error:
+            print(error)
+        return result
