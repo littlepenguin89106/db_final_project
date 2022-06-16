@@ -198,3 +198,43 @@ def GetDataset(task_id):
         return HTTPResponse(data=data, message='GetDataset success')
     except:
         return HTTPError('unknown error', 406)
+
+
+@be_api.route('/get_all_dataset', methods=['GET'])
+def GetAllDataset():
+    try:
+        data = GetManager().get_all_dataset()
+        return HTTPResponse(data=data, message='GetAllDataset success')
+    except:
+        return HTTPError('unknown error', 406)
+
+
+@be_api.route('/update_dataset', methods=['POST'])
+@Request.json('dataset_id: int', 'dataset_description: str', 'dataset_name: str')
+def UpdateDataset(dataset_id, dataset_description, dataset_name):
+    try:
+        data = UpdateManager().update_dataset(dataset_id, dataset_description, dataset_name)
+        return HTTPResponse(data=data, message='UpdateDataset success')
+    except:
+        return HTTPError('unknown error', 406)
+
+
+@be_api.route('/get_task_info', methods=['POST'])
+@Request.json('task_id: int')
+def GetTaskInfo(task_id):
+    try:
+        data = GetManager().get_task_info(task_id)
+        return HTTPResponse(data=data, message='GetTaskInfo success')
+    except:
+        print(traceback.format_exc())
+        return HTTPError('unknown error', 406)
+
+
+@be_api.route('/get_dataset_info', methods=['POST'])
+@Request.json('dataset_id: int')
+def GetDatasetInfo(dataset_id):
+    try:
+        data = GetManager().get_dataset_info(dataset_id)
+        return HTTPResponse(data=data, message='GetDatasetInfo success')
+    except:
+        return HTTPError('unknown error', 406)

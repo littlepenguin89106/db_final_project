@@ -130,3 +130,46 @@ class GetManager(DataBase):
         except Error as error:
             print(error)
         return result
+    
+    def get_all_dataset(self):
+        try:
+            result = self.query("""
+                SELECT ds_id as dataset_id, description as dataset_description, name as dataset_name
+                FROM Dataset
+            """)
+        except Error as error:
+            print(error)
+        return result
+
+    def get_task_info(self, task_id):
+        try:
+            query = """
+                SELECT name as task_name, description as task_description
+                FROM Task
+                WHERE task_id = %s
+            """
+            self.execute(query, (task_id,))
+            result = self.fetchone()
+
+            result["dataset"] = self.query("""
+                SELECT ds_id as dataset_id, Dataset.name as dataset_name
+                FROM ds_task
+                NATURAL JOIN Dataset
+                WHERE task_id = %s
+            """, (task_id,))
+        except Error as error:
+            print(error)
+        return result
+
+
+    def get_dataset_info(self, ds_id):
+        try:
+            self.execute("""
+                SELECT name, description
+                FROM Dataset
+                WHERE ds_id = %s
+            """, (ds_id,))
+            result = self.fetchone()
+        except Error as error:
+            print(error)
+        return result

@@ -38,6 +38,7 @@ create table Bulletin (
 create table Task (
     task_id int auto_increment,
     name varchar(100),
+    description text,
     primary key (task_id)
 );
 
