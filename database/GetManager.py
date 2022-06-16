@@ -144,7 +144,7 @@ class GetManager(DataBase):
     def get_task_info(self, task_id):
         try:
             query = """
-                SELECT name as task_name, description as task_description
+                SELECT name as task_name
                 FROM Task
                 WHERE task_id = %s
             """
