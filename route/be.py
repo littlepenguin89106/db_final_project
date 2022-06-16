@@ -210,10 +210,10 @@ def GetAllDataset():
 
 
 @be_api.route('/update_dataset', methods=['POST'])
-@Request.json('dataset_id: int', 'dataset_description: str', 'dataset_name: str')
-def UpdateDataset(dataset_id, dataset_description, dataset_name):
+@Request.json('dataset_id: int', 'description: str', 'name: str', 'attribute: str')
+def UpdateDataset(dataset_id, description, name, attribute):
     try:
-        data = UpdateManager().update_dataset(dataset_id, dataset_description, dataset_name)
+        data = UpdateManager().update_dataset(dataset_id, description, name, attribute)
         return HTTPResponse(data=data, message='UpdateDataset success')
     except:
         return HTTPError('unknown error', 406)
@@ -236,5 +236,25 @@ def GetDatasetInfo(dataset_id):
     try:
         data = GetManager().get_dataset_info(dataset_id)
         return HTTPResponse(data=data, message='GetDatasetInfo success')
+    except:
+        return HTTPError('unknown error', 406)
+
+    
+@be_api.route('/add_dataset', methods=['POST'])
+@Request.json('name: str', 'description: str', 'attribute: str')
+def AddDataset(name, description, attribute):
+    try:
+        data = AddManager().add_dataset(name, description, attribute)
+        return HTTPResponse(data=data, message='AddDataset success')
+    except:
+        return HTTPError('unknown error', 406)
+
+
+@be_api.route('/delete_dataset', methods=['POST'])
+@Request.json('dataset_id: int')
+def DeleteDataset(dataset_id):
+    try:
+        data = DelManager().del_dataset(dataset_id)
+        return HTTPResponse(data=data, message='DeleteDataset success')
     except:
         return HTTPError('unknown error', 406)

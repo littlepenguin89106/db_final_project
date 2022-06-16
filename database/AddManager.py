@@ -47,6 +47,16 @@ class AddManager(DataBase):
         except Error as error:
             print(error)
 
+
+    def add_dataset(self, name, description, attribute):
+        query = "INSERT INTO Dataset(name, description, attribute) VALUES(%s, %s, %s)"
+        data = (name, description, attribute)
+        try:
+            self.execute(query, data)
+            self.commit();
+        except Error as error:
+            print(error)
+
 # test only
 if __name__ == "__main__":
     db = AddManager()

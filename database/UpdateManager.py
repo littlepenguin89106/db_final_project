@@ -74,15 +74,16 @@ class UpdateManager(DataBase):
         except Error as error:
             print(error)
 
-    def update_dataset(self, ds_id, description, name):
+    def update_dataset(self, ds_id, description, attribute, name):
         try:
             query = """
                 UPDATE Dataset
                 Set name = %s,
-                    description = %s
+                    description = %s,
+                    attribute = %s
                 WHERE ds_id = %s
             """
-            data = (name, description, ds_id)
+            data = (name, description, attribute, ds_id)
             self.execute(query, data)
             self.commit()
         except Error as error:

@@ -165,7 +165,7 @@ class GetManager(DataBase):
     def get_dataset_info(self, ds_id):
         try:
             self.execute("""
-                SELECT name, description
+                SELECT name, description, attribute
                 FROM Dataset
                 WHERE ds_id = %s
             """, (ds_id,))

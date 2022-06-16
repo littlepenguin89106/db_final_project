@@ -41,3 +41,13 @@ class DelManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+
+    def del_dataset(self, ds_id):
+        try:
+            self.execute("""
+                DELETE FROM Dataset
+                WHERE ds_id = %s
+            """, (ds_id,))
+            self.commit()
+        except Error as error:
+            print(error)
