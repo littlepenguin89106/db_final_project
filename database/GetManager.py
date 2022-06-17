@@ -84,6 +84,9 @@ class GetManager(DataBase):
             query_result = self.fetchone()
             result.update(query_result)
 
+            result['published_date'] = result['published_date'].strftime('%Y-%m-%d')
+#            print(result['published_date'])
+
             query = """
                 SELECT algo_id, name as algo_name
                 FROM algo_paper
