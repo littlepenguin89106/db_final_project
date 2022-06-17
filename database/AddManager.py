@@ -18,6 +18,7 @@ class AddManager(DataBase):
 
         try:
             self.execute(query, data)
+            self.commit()
             paper_id = self.cursor.lastrowid
 
             if algo_id_list is not None:
@@ -26,6 +27,7 @@ class AddManager(DataBase):
                 for algo_id in algo_id_list:
                     data = (algo_id["algo_id"], paper_id)
                     self.execute(query, data)
+                    self.commit()
             
             if task_id_list is not None:
                 query = "INSERT INTO paper_task(paper_id, task_id)" \
@@ -33,6 +35,7 @@ class AddManager(DataBase):
                 for task_id in task_id_list:
                     data = (paper_id, task_id["task_id"])
                     self.execute(query, data)
+                    self.commit()
 
             self.commit()
         except Error as error:
