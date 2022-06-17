@@ -17,11 +17,13 @@ class DelManager(DataBase):
                 DELETE FROM algo_paper
                 WHERE paper_id = %s
             """, (paper_id,))
+            self.commit()
 
             self.execute("""
                 DELETE FROM paper_task
                 WHERE paper_id = %s
             """, (paper_id,))
+            self.commit()
 
             self.execute("""
                 DELETE FROM Paper
