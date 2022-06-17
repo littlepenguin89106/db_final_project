@@ -114,7 +114,7 @@ class GetManager(DataBase):
     
     def get_task(self):
         try:
-            result = self.query("SELECT * FROM Task")
+            result = self.query("SELECT task_id, name as task_name FROM Task")
         except Error as error:
             print(error)
         return result
