@@ -16,6 +16,7 @@ def GetPaper():
         data = GetManager().get_paper()
         return HTTPResponse(data=data, message='GetPaper success')
     except:
+        print(traceback.format_exc())
         return HTTPError('unknown error', 406)
 
 
@@ -256,5 +257,15 @@ def DeleteDataset(dataset_id):
     try:
         data = DelManager().del_dataset(dataset_id)
         return HTTPResponse(data=data, message='DeleteDataset success')
+    except:
+        return HTTPError('unknown error', 406)
+
+
+@be_api.route('/get_bulletin_info', methods=['POST'])
+@Request.json('bulletin_id: int')
+def GetBulletinInfo(bulletin_id):
+    try:
+        data = GetManager().get_bulletin_info(bulletin_id)
+        return HTTPResponse(data=data, message='GetBulletinInfo success')
     except:
         return HTTPError('unknown error', 406)

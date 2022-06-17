@@ -173,3 +173,15 @@ class GetManager(DataBase):
         except Error as error:
             print(error)
         return result
+    
+    def get_bulletin_info(self, bulletin_id):
+        try:
+            self.execute("""
+                SELECT author, description
+                FROM Bulletin
+                WHERE bulletin_id = %s
+            """, (bulletin_id,))
+            result = self.fetchone()
+        except Error as error:
+            print(error)
+        return result

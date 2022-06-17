@@ -74,7 +74,7 @@ class UpdateManager(DataBase):
         except Error as error:
             print(error)
 
-    def update_dataset(self, ds_id, description, attribute, name):
+    def update_dataset(self, ds_id, description, name, attribute):
         try:
             query = """
                 UPDATE Dataset
