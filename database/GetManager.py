@@ -1,4 +1,5 @@
 from .DataBase import *
+from datetime import datetime
 
 class GetManager(DataBase):
     def get_algo(self):
@@ -11,6 +12,7 @@ class GetManager(DataBase):
             result = self.fetchall()
         except Error as error:
             print(error)
+            raise(error)
         return result
 
     def show_algo(self, algo_id):
@@ -34,6 +36,7 @@ class GetManager(DataBase):
             result["paper_name"] = self.fetchall()
         except Error as error:
             print(error)
+            raise(error)
         return result
 
     def get_algo_info(self, algo_id):
@@ -46,6 +49,7 @@ class GetManager(DataBase):
             result = self.fetchone()
         except Error as error:
             print(error)
+            raise(error)
         return result
     
     def exist_algo(self, algo_id):
@@ -59,6 +63,7 @@ class GetManager(DataBase):
                 result["deletable"] = False
         except Error as error:
             print(error)
+            raise error
         return result
 
     def get_paper(self):
@@ -70,6 +75,7 @@ class GetManager(DataBase):
             result = self.fetchall()
         except Error as error:
             print(error)
+            raise(error)
         return result
 
     def show_paper(self, paper_id):
@@ -103,6 +109,7 @@ class GetManager(DataBase):
             result["task"] = self.fetchall()
         except Error as error:
             print(error)
+            raise(error)
         return result
 
     def get_bulletin(self):
@@ -110,6 +117,7 @@ class GetManager(DataBase):
             result = self.query("SELECT * FROM Bulletin")
         except Error as error:
             print(error)
+            raise(error)
         return result
     
     def get_task(self):
@@ -117,6 +125,7 @@ class GetManager(DataBase):
             result = self.query("SELECT task_id, name as task_name FROM Task")
         except Error as error:
             print(error)
+            raise(error)
         return result
 
     def get_dataset(self, task_id):
@@ -129,6 +138,21 @@ class GetManager(DataBase):
             """, (task_id,))
         except Error as error:
             print(error)
+            raise(error)
+        return result
+    
+    def exist_dataset(self, ds_id):
+        result = dict({"deletable": None})
+        try:
+            self.execute("SELECT ds_id FROM ds_task WHERE ds_id = %s", (ds_id,))
+            query_result = self.fetchone()
+            if query_result is None:
+                result["deletable"] = True
+            else:
+                result["deletable"] = False
+        except Error as error:
+            print(error)
+            raise(error)
         return result
     
     def get_all_dataset(self):
@@ -184,4 +208,5 @@ class GetManager(DataBase):
             result = self.fetchone()
         except Error as error:
             print(error)
+            raise(error)
         return result

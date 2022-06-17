@@ -153,6 +153,7 @@ def DeleteBulletin(bulletin_id):
 def AddAlgo(algo_name, description):
     try:
         AddManager().add_algo(algo_name, description)
+        print(traceback.format_exc())
         return HTTPResponse(message='AddAlgo success')
     except:
         return HTTPError('unknown error', 406)
@@ -268,4 +269,15 @@ def GetBulletinInfo(bulletin_id):
         data = GetManager().get_bulletin_info(bulletin_id)
         return HTTPResponse(data=data, message='GetBulletinInfo success')
     except:
+        return HTTPError('unknown error', 406)
+
+
+@be_api.route('/exist_dataset', methods=['POST'])
+@Request.json('dataset_id: int')
+def ExistDataset(dataset_id):
+    try:
+        data = GetManager().exist_dataset(dataset_id)
+        return HTTPResponse(data=data, message='ExistDataset success')
+    except:
+        print(traceback.format_exc())
         return HTTPError('unknown error', 406)

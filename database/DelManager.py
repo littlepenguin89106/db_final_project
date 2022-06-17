@@ -10,6 +10,7 @@ class DelManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+            raise(error)
 
     def del_paper(self, paper_id):
         try:
@@ -32,6 +33,7 @@ class DelManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+            raise(error)
 
     
     def del_bulletin(self, bulletin_id):
@@ -43,9 +45,15 @@ class DelManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+            raise(error)
 
     def del_dataset(self, ds_id):
         try:
+            self.execute("""
+                DELETE FROM ds_task
+                WHERE ds_id = %s
+            """, (ds_id,))
+
             self.execute("""
                 DELETE FROM Dataset
                 WHERE ds_id = %s
@@ -53,3 +61,4 @@ class DelManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+            raise(error)

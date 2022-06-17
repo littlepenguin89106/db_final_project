@@ -14,6 +14,7 @@ class UpdateManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+            raise error
 
     def update_paper_info(self, paper_id, name, description, author, publication, published_date, algo_id_list, task_id_list):
         query = """
@@ -36,7 +37,6 @@ class UpdateManager(DataBase):
                 WHERE paper_id = %s
             """
             self.execute(query, (paper_id,))
-            self.commit()
 
             if algo_id_list is not None:
                 query = "INSERT INTO algo_paper(algo_id, paper_id)" \
@@ -44,14 +44,12 @@ class UpdateManager(DataBase):
                 for algo_id in algo_id_list:
                     data = (algo_id["algo_id"], paper_id)
                     self.execute(query, data)
-                    self.commit()
             
             query = """
                 DELETE FROM paper_task
                 WHERE paper_id = %s
             """
             self.execute(query, (paper_id,))
-            self.commit()
 
             if task_id_list is not None:
                 query = "INSERT INTO paper_task(paper_id, task_id)" \
@@ -59,11 +57,11 @@ class UpdateManager(DataBase):
                 for task_id in task_id_list:
                     data = (paper_id, task_id["task_id"])
                     self.execute(query, data)
-                    self.commit()
 
             self.commit()
         except Error as error:
             print(error)
+            raise error
 
     def update_bulletin_info(self, bulletin_id, author, description):
         try:
@@ -78,6 +76,7 @@ class UpdateManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+            raise error
 
     def update_dataset(self, ds_id, description, name, attribute):
         try:
@@ -93,3 +92,4 @@ class UpdateManager(DataBase):
             self.commit()
         except Error as error:
             print(error)
+            raise error
