@@ -279,5 +279,4 @@ def ExistDataset(dataset_id):
         data = GetManager().exist_dataset(dataset_id)
         return HTTPResponse(data=data, message='ExistDataset success')
     except:
-        print(traceback.format_exc())
         return HTTPError('unknown error', 406)
